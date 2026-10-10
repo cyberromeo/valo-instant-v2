@@ -7,6 +7,7 @@ import { VALORANT_REGIONS, REGION_KEYS, type RegionKey } from "@/lib/constants";
 import { RANKED_ONLY, rankByTier } from "@/lib/ranks";
 import { MODES, type LobbySlot, type Mode, type Restriction } from "@/types/lobby";
 import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/Pic";
 import type { AgentLite, RoleLite } from "./types";
 
 const emptySlot = (i: number): LobbySlot => ({ index: i, status: "open", restriction: { type: "any" } });
@@ -71,7 +72,7 @@ export function CreateLobbyModal({ agents, roles, region: initialRegion, onClose
             <label className="block"><span className="label">Region</span><select value={region} onChange={(e) => setRegion(e.target.value as RegionKey)} className="input">{REGION_KEYS.map((r) => <option key={r} value={r}>{r} · {VALORANT_REGIONS[r].name}</option>)}</select></label>
             <label className="block"><span className="label">Server</span><select value={server} onChange={(e) => setServer(e.target.value)} className="input">{VALORANT_REGIONS[region].servers.map((s) => <option key={s}>{s}</option>)}</select></label>
           </div>
-          <label className="block"><span className="label">Party code (from your Valorant party screen)</span><input value={partyCode} onChange={(e) => setPartyCode(e.target.value.slice(0, 12))} placeholder="e.g. VAL143" className="input font-mono uppercase tracking-widest" /></label>
+          <label className="block"><span className="label">Party code (from your Valorant party screen)</span><input value={partyCode} onChange={(e) => setPartyCode(e.target.value.slice(0, 12))} placeholder="VAL143" className="input font-mono uppercase tracking-widest" /></label>
           <div className="grid grid-cols-2 gap-3">
             <label className="block"><span className="label">Minimum rank</span><select value={minRank} onChange={(e) => setMinRank(Number(e.target.value))} className="input">{RANKED_ONLY.map((r) => <option key={r.tier} value={r.tier}>{r.name}</option>)}</select></label>
             <label className="block"><span className="label">Maximum rank</span><select value={maxRank} onChange={(e) => setMaxRank(Number(e.target.value))} className="input">{RANKED_ONLY.map((r) => <option key={r.tier} value={r.tier}>{r.name}</option>)}</select></label>
@@ -82,13 +83,13 @@ export function CreateLobbyModal({ agents, roles, region: initialRegion, onClose
             <div className="grid grid-cols-5 gap-2">
               {slots.map((s) => {
                 const a = s.restriction?.type === "agent" ? agents.find((x) => x.id === s.restriction?.value) : null;
-                const label = s.index === 0 ? "You (host)" : s.status === "locked" ? "Locked" : s.restriction?.type === "any" || !s.restriction ? "Anyone" : s.restriction.displayName;
+                const label = s.index === 0 ? "You" : s.status === "locked" ? "Locked" : s.restriction?.type === "any" || !s.restriction ? "Anyone" : s.restriction.displayName;
                 const icon = s.index === 0 ? profile?.playerCardUrl || user?.photoURL : a?.icon || s.restriction?.iconUrl;
                 return (
                   <button key={s.index} type="button" disabled={s.index === 0} onClick={() => setActive(s.index)}
                     className={cn("flex flex-col items-center gap-1 rounded-xl border p-2 text-[10px] font-semibold", s.index === 0 ? "border-val/50 bg-val/10" : s.status === "locked" ? "border-line/50 bg-ink/40 text-fg-3" : "border-line bg-ink-3 hover:border-line-2", active === s.index && "ring-2 ring-val")}>
-                    <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-md bg-ink-4">{s.status === "locked" ? <Lock size={14} /> : icon ? <img src={icon} alt="" className={cn("h-9 w-9 object-cover", s.restriction?.type === "role" && "invert p-1.5")} /> : <span className="text-fg-3">{s.index + 1}</span>}</span>
-                    <span className="w-full truncate text-center">{label}</span>
+                    <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-md bg-ink-4">{s.status === "locked" ? <Lock size={14} /> : icon ? <Icon src={icon} alt="" size={36} className={cn("h-9 w-9 object-cover", s.restriction?.type === "role" && "invert p-1.5")} /> : <span className="text-fg-3">{s.index + 1}</span>}</span>
+                    <span className="w-full break-words text-center leading-tight line-clamp-2">{label}</span>
                   </button>
                 );
               })}
@@ -103,7 +104,7 @@ export function CreateLobbyModal({ agents, roles, region: initialRegion, onClose
                 </div>
                 <p className="label">Or a specific agent</p>
                 <div className="grid max-h-40 grid-cols-6 gap-1.5 overflow-y-auto sm:grid-cols-9">
-                  {agents.map((a) => <button key={a.id} type="button" title={a.name} aria-label={a.name} onClick={() => setRestriction(active, { type: "agent", value: a.id, displayName: a.name, iconUrl: a.icon })} className="overflow-hidden rounded-md border border-line hover:border-val"><img src={a.icon} alt="" className="aspect-square w-full" /></button>)}
+                  {agents.map((a) => <button key={a.id} type="button" title={a.name} aria-label={a.name} onClick={() => setRestriction(active, { type: "agent", value: a.id, displayName: a.name, iconUrl: a.icon })} className="overflow-hidden rounded-md border border-line hover:border-val"><Icon src={a.icon} alt="" size={48} className="aspect-square w-full" /></button>)}
                 </div>
               </div>
             )}

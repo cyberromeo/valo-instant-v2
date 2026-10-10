@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Img } from "@/components/ui/Img";
+import { Pic } from "@/components/ui/Pic";
 import { cn } from "@/lib/utils";
 
 type A = { slug: string; name: string; role: string; icon: string; bust: string | null; colors: string[]; abilities: string[] };
@@ -22,7 +22,7 @@ export function AgentGrid({ agents, roles }: { agents: A[]; roles: string[] }) {
         {list.map((a) => (
           <li key={a.slug}>
             <Link href={`/wiki/agents/${a.slug}`} className="card group relative block aspect-[4/5] overflow-hidden" style={{ background: `linear-gradient(160deg, #${a.colors?.[0]?.slice(0, 6) || "1f232c"}55, #${a.colors?.[2]?.slice(0, 6) || "0a0b0f"})` }}>
-              <Img src={a.bust} alt="" className="absolute inset-x-0 bottom-0 h-full w-full object-cover object-top transition group-hover:scale-105" />
+              <Pic src={a.bust} alt="" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" className="object-cover object-top transition group-hover:scale-105" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/70 to-transparent p-3 pt-10">
                 <p className="font-display text-2xl uppercase leading-none">{a.name}</p>
                 <p className="text-xs text-fg-2">{a.role}</p>

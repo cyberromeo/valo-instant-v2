@@ -1,6 +1,6 @@
 "use client";
 import {
-  addDoc, collection, deleteDoc, doc, getDoc, limit, onSnapshot, orderBy, query, runTransaction, serverTimestamp, setDoc, updateDoc, where,
+  addDoc, collection, deleteDoc, doc, getDoc, limit, onSnapshot, query, runTransaction, serverTimestamp, setDoc, updateDoc, where,
   type DocumentData, type QueryDocumentSnapshot, type Unsubscribe,
 } from "firebase/firestore";
 import { getFirebase } from "./firebase";
@@ -21,10 +21,12 @@ export const lobbies = {
   /** Live list of open lobbies in a region, newest first. Expired ones are dropped client-side. */
   subscribe(region: string, cb: (rows: Lobby[]) => void, onError?: (e: Error) => void): Unsubscribe {
     const { db } = need();
-    const q = query(collection(db, "lobbies"), where("region", "==", region), orderBy("createdAt", "desc"), limit(100));
+    // Single-field filter only, sorted here: no composite index is needed for the app to work.
+    // (firestore.indexes.json ships the region+createdAt index for larger regions; deploy it when convenient.)
+    const q = query(collection(db, "lobbies"), where("region", "==", region), limit(200));
     return onSnapshot(q, (snap) => {
       const now = Date.now();
-      cb(snap.docs.map(toLobby).filter((l) => l.expiresAt > now && l.status !== "closed"));
+      cb(snap.docs.map(toLobby).filter((l) => l.expiresAt > now && l.status !== "closed").sort((a, b) => b.createdAt - a.createdAt));
     }, (e) => onError?.(e));
   },
 

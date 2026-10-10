@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LogOut, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { lobbies as lobbyDb } from "@/lib/db";
@@ -20,7 +20,8 @@ export function ProfileView({ lookupAvailable }: { lookupAvailable: boolean }) {
   const [busy, setBusy] = useState(false); const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [mine, setMine] = useState<Lobby[]>([]);
 
-  useEffect(() => { if (profile) { setName(profile.riotName || ""); setTag(profile.riotTag || ""); } }, [profile]);
+  const seeded = useRef(false);
+  useEffect(() => { if (profile && !seeded.current) { seeded.current = true; setName(profile.riotName || ""); setTag(profile.riotTag || ""); } }, [profile]);
   useEffect(() => { if (!user || !ready) return; try { return lobbyDb.subscribeMine(user.uid, setMine); } catch { return; } }, [user, ready]);
 
   const lookup = async () => {
@@ -28,11 +29,8 @@ export function ProfileView({ lookupAvailable }: { lookupAvailable: boolean }) {
     try {
       const r = await fetch("/api/riot/lookup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), tag: tag.trim().replace(/^#/, "") }) });
       const j = await r.json();
-      if (!r.ok) {
-        if (j.notConfigured) { await saveProfile({ riotName: name.trim(), riotTag: tag.trim().replace(/^#/, ""), rankVerified: false }); setMsg({ ok: true, text: "Riot ID saved. Live rank lookup is not connected yet, so pick your rank below." }); }
-        else setMsg({ ok: false, text: j.error || "Lookup failed." });
-        return;
-      }
+      if (j.notConfigured) { await saveProfile({ riotName: name.trim(), riotTag: tag.trim().replace(/^#/, ""), rankVerified: false }); setMsg({ ok: true, text: "Riot ID saved. Live rank lookup is not connected yet, so pick your rank below." }); return; }
+      if (!r.ok) { setMsg({ ok: false, text: j.error || "Lookup failed." }); return; }
       await saveProfile({ riotName: j.riotName, riotTag: j.riotTag, puuid: j.puuid, region: j.region, rankTier: j.rankTier, rankName: j.rankName, rankIconUrl: j.rankIconUrl, accountLevel: j.accountLevel, playerCardUrl: j.playerCardUrl, rankVerified: true });
       setMsg({ ok: true, text: `Linked ${j.riotName}#${j.riotTag}: ${j.rankName}${j.rr != null ? ` · ${j.rr} RR` : ""}, level ${j.accountLevel}.` });
     } catch { setMsg({ ok: false, text: "Could not reach the lookup service." }); } finally { setBusy(false); }
@@ -60,7 +58,7 @@ export function ProfileView({ lookupAvailable }: { lookupAvailable: boolean }) {
         <section className="card flex items-center gap-4 p-5">
           <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-ink-3"><Img src={profile?.playerCardUrl || user.photoURL} alt="" className="h-full w-full object-cover" eager /></div>
           <div className="min-w-0">
-            <p className="truncate text-sm text-fg-2">{user.email}</p>
+            <p className="break-all text-sm text-fg-2">{user.email}</p>
             <p className="mt-1 flex items-center gap-2 text-base font-bold"><img src={profile?.rankIconUrl || rank.icon} alt="" className="h-7 w-7" /><span style={{ color: rank.color }}>{profile?.rankName || rank.name}</span></p>
             <p className="text-xs text-fg-3">{profile?.rankVerified ? "Verified from a live lookup" : "Self-reported"}{profile?.accountLevel ? ` · level ${profile.accountLevel}` : ""} · {VALORANT_REGIONS[(profile?.region as keyof typeof VALORANT_REGIONS) || "AP"]?.name || profile?.region}</p>
           </div>

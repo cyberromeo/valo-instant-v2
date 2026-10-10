@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getAgents } from "@/lib/valorant-api";
 import { AbilityTabs } from "@/components/wiki/AbilityTabs";
 import { Img } from "@/components/ui/Img";
+import { Icon, Pic } from "@/components/ui/Pic";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export async function generateStaticParams() { return (await getAgents()).map((a) => ({ slug: a.slug })); }
@@ -40,7 +41,7 @@ export default async function AgentPage({ params }: { params: Promise<{ slug: st
             )}
           </div>
           <div className="relative mx-auto -mb-5 h-[320px] w-full max-w-[280px] md:-mb-8 md:h-[440px] md:w-[360px] md:max-w-none">
-            <Img src={a.fullPortrait} alt={a.displayName} className="absolute inset-0 h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,.6)]" eager />
+            <Pic src={a.fullPortrait} alt={a.displayName} sizes="(min-width: 768px) 360px, 280px" priority className="object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,.6)]" />
           </div>
         </div>
       </section>
@@ -59,7 +60,7 @@ export default async function AgentPage({ params }: { params: Promise<{ slug: st
             {mates.map((m) => (
               <li key={m.uuid} className="shrink-0">
                 <Link href={`/wiki/agents/${m.slug}`} className="flex w-24 flex-col items-center gap-2 rounded-xl border border-line bg-ink-2 p-2 text-center text-xs font-semibold hover:border-line-2">
-                  <Img src={m.displayIcon} alt="" className="h-14 w-14 rounded-lg" />{m.displayName}
+                  <Icon src={m.displayIcon} alt="" size={56} className="h-14 w-14 rounded-lg" />{m.displayName}
                 </Link>
               </li>
             ))}

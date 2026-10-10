@@ -17,7 +17,7 @@ export function AbilityTabs({ abilities }: { abilities: Ability[] }) {
           <button key={a.slot} role="tab" aria-selected={i === k} type="button" onClick={() => setI(k)}
             className={cn("flex flex-col items-center gap-1 px-2 py-3 text-[11px] font-semibold text-fg-3 transition", i === k && "bg-ink-3 text-fg border-b-2 border-val")}>
             <span className="relative"><Img src={a.displayIcon} alt="" className="h-8 w-8 invert" /><kbd className="absolute -right-2 -top-1 rounded bg-val px-1 font-mono text-[9px] text-white">{KEY[a.slot] || "?"}</kbd></span>
-            <span className="max-w-full truncate">{a.displayName}</span>
+            <span className="max-w-full break-words leading-tight line-clamp-2">{a.displayName}</span>
           </button>
         ))}
       </div>

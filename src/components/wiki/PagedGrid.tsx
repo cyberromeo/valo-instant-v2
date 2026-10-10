@@ -61,7 +61,7 @@ export function PagedGrid({ kind }: { kind: Kind }) {
             <li key={c.id}>
               <button type="button" onClick={() => setOpen(c)} className="card block w-full overflow-hidden text-left hover:border-line-2">
                 <Img src={c.icon} alt={c.name} className={cn("w-full object-contain bg-ink-3", kind === "cards" ? "aspect-square object-cover" : "aspect-square p-2")} />
-                <p className="truncate px-2 py-1.5 text-[11px] font-semibold" title={c.name}>{c.name}</p>
+                <p className="px-2 py-1.5 text-[11px] font-semibold leading-tight break-words">{c.name}</p>
               </button>
             </li>
           ))}

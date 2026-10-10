@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { getMaps } from "@/lib/valorant-api";
 import { Minimap } from "@/components/wiki/Minimap";
 import { Img } from "@/components/ui/Img";
+import { Pic } from "@/components/ui/Pic";
 
 export async function generateStaticParams() { return (await getMaps()).map((m) => ({ slug: m.slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -25,7 +26,7 @@ export default async function MapPage({ params }: { params: Promise<{ slug: stri
     <article className="animate-rise">
       <Link href="/wiki/maps" className="mb-3 inline-flex items-center gap-1 text-xs font-semibold text-fg-2 hover:text-fg"><ArrowLeft size={14} /> Maps</Link>
       <section className="card relative overflow-hidden">
-        <Img src={m.splash} alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" eager />
+        <Pic src={m.splash} alt="" sizes="(min-width: 1152px) 1152px, 100vw" priority className="object-cover opacity-50" />
         <div className="relative bg-gradient-to-t from-ink via-ink/70 to-transparent p-5 pt-28 md:p-8 md:pt-40">
           <p className="kicker mb-1">{m.competitive ? "COMPETITIVE POOL" : "MODE MAP"} · {m.coordinates || "Classified"}</p>
           <h1 className="font-display text-5xl uppercase leading-[.9] sm:text-7xl">{m.displayName}</h1>

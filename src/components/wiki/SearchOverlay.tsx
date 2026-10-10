@@ -86,8 +86,8 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
                 className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left ${i === sel ? "bg-ink-3" : ""}`}>
                 {it.i ? <Img src={it.i} alt="" className="h-8 w-8 shrink-0 rounded-md object-contain" /> : <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-ink-4 font-mono text-[10px] text-fg-3">{it.t.slice(0, 2).toUpperCase()}</span>}
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold">{it.n}</span>
-                  <span className="block truncate text-xs text-fg-3">{it.t}{it.s ? ` · ${it.s}` : ""}</span>
+                  <span className="block text-sm font-semibold leading-tight">{it.n}</span>
+                  <span className="block text-xs text-fg-3">{it.t}{it.s ? ` · ${it.s}` : ""}</span>
                 </span>
               </button>
             </li>

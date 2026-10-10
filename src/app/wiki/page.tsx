@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHead } from "@/components/ui/PageHead";
+import { Pic } from "@/components/ui/Pic";
 import { getAgents, getMaps, getTiers, getVersion, getWeapons } from "@/lib/valorant-api";
 import { num } from "@/lib/utils";
 
@@ -34,7 +35,7 @@ export default async function WikiHome() {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {tiles.map((t) => (
           <Link key={t.href} href={t.href} className={`card group relative overflow-hidden p-4 transition hover:border-line-2 ${t.tall ? "row-span-2 min-h-[260px]" : "min-h-[116px]"} ${t.accent ? "border-val/50 bg-val/10" : ""}`}>
-            {t.img && <img src={t.img} alt="" aria-hidden className={`pointer-events-none absolute inset-0 h-full w-full opacity-60 transition group-hover:scale-105 ${t.contain ? "object-contain p-6" : "object-cover"}`} />}
+            {t.img && <Pic src={t.img} alt="" sizes="(min-width: 768px) 25vw, 50vw" className={`pointer-events-none opacity-60 transition group-hover:scale-105 ${t.contain ? "object-contain p-6" : "object-cover"}`} />}
             <div className="relative flex h-full flex-col justify-end">
               <span className="h2 drop-shadow">{t.title}</span>
               <span className="text-xs text-fg-2">{t.sub}</span>

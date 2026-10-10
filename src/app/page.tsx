@@ -4,6 +4,7 @@ import { currentAct, getAgents, getMaps, getVersion, getWeapons } from "@/lib/va
 import { getRiotStatus } from "@/lib/riot-status";
 import { getEsportsNews } from "@/lib/news";
 import { Img } from "@/components/ui/Img";
+import { Icon } from "@/components/ui/Pic";
 import { num } from "@/lib/utils";
 import { HomeHero } from "@/components/shell/HomeHero";
 
@@ -27,11 +28,11 @@ export default async function Home() {
         </Link>
         <Link href="/status" className="card flex items-center gap-3 p-4">
           <span className={`h-3 w-3 shrink-0 rounded-full ${incidents ? "bg-val" : "bg-teal animate-pulseDot"}`} />
-          <span className="min-w-0"><span className="block text-sm font-bold">Servers</span><span className="block truncate text-xs text-fg-2">{ap ? (incidents ? `${incidents} incident in AP` : "AP all normal") : "Status unavailable"}</span></span>
+          <span className="min-w-0"><span className="block text-sm font-bold">Servers</span><span className="block text-xs text-fg-2">{ap ? (incidents ? `${incidents} incident in AP` : "AP all normal") : "Status unavailable"}</span></span>
         </Link>
         <Link href="/news" className="card flex items-center gap-3 p-4">
           <Radio className="shrink-0 text-teal" />
-          <span className="min-w-0"><span className="block text-sm font-bold">Esports</span><span className="block truncate text-xs text-fg-2">{news[0]?.title || "Latest news"}</span></span>
+          <span className="min-w-0"><span className="block text-sm font-bold">Esports</span><span className="block text-xs text-fg-2 line-clamp-2">{news[0]?.title || "Latest news"}</span></span>
         </Link>
       </section>
 
@@ -53,7 +54,7 @@ export default async function Home() {
         <div className="mb-3 flex items-end justify-between"><div><p className="kicker">{agents.length} AGENTS</p><h2 className="h2">Agents</h2></div><Link href="/wiki/agents" className="text-xs font-bold text-val">All agents</Link></div>
         <ul className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-10">
           {agents.map((a) => (
-            <li key={a.uuid}><Link href={`/wiki/agents/${a.slug}`} className="block overflow-hidden rounded-xl border border-line bg-ink-2 hover:border-val" title={a.displayName}><Img src={a.displayIcon} alt={a.displayName} className="aspect-square w-full" /></Link></li>
+            <li key={a.uuid}><Link href={`/wiki/agents/${a.slug}`} className="block overflow-hidden rounded-xl border border-line bg-ink-2 hover:border-val" title={a.displayName}><Icon src={a.displayIcon} alt={a.displayName} size={96} className="aspect-square w-full" /></Link></li>
           ))}
         </ul>
       </section>

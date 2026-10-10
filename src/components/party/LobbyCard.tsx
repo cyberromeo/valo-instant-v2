@@ -7,6 +7,7 @@ import { rankByTier } from "@/lib/ranks";
 import { MODES, type Lobby } from "@/types/lobby";
 import { cn, timeAgo } from "@/lib/utils";
 import { Img } from "@/components/ui/Img";
+import { Icon } from "@/components/ui/Pic";
 import type { AgentLite } from "./types";
 
 export function LobbyCard({ lobby, agents, onNeedSignIn, say, inParty }: { lobby: Lobby; agents: AgentLite[]; onNeedSignIn: () => void; say: (m: string) => void; inParty: boolean }) {
@@ -41,12 +42,12 @@ export function LobbyCard({ lobby, agents, onNeedSignIn, say, inParty }: { lobby
     <article className={cn("card flex h-full flex-col gap-3 p-4", isMember && "border-teal/50")}>
       <header className="flex items-start gap-3">
         <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-ink-3">
-          <Img src={lobby.hostAvatarUrl} alt="" className="h-full w-full object-cover" />
+          {lobby.hostAvatarUrl ? <Img src={lobby.hostAvatarUrl} alt="" className="h-full w-full object-cover" /> : <span className="grid h-full w-full place-items-center font-display text-lg text-val">{lobby.hostName.slice(0, 1).toUpperCase()}</span>}
           <img src={host.icon} alt="" className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded bg-ink/80 p-0.5" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-bold">{lobby.hostName}</p>
-          <p className="truncate text-xs text-fg-2" style={{ color: host.color }}>{host.name} · <span className="text-fg-3">{lobby.server}</span></p>
+          <p className="break-words text-sm font-bold leading-tight">{lobby.hostName}</p>
+          <p className="text-xs text-fg-2" style={{ color: host.color }}>{host.name} · <span className="text-fg-3">{lobby.server}</span></p>
         </div>
         <div className="text-right">
           <span className={cn("inline-block rounded-md px-2 py-0.5 font-mono text-[10px] font-bold uppercase", mode?.ranked ? "bg-val/20 text-val" : "bg-teal/15 text-teal")}>{mode?.short || lobby.mode}</span>
@@ -66,9 +67,9 @@ export function LobbyCard({ lobby, agents, onNeedSignIn, say, inParty }: { lobby
                 className={cn("flex w-full flex-col items-center gap-1 rounded-lg border p-1.5 text-[10px] font-semibold leading-tight",
                   s.status === "filled" ? "border-line bg-ink-3 text-fg-2" : s.status === "locked" ? "border-line/50 bg-ink/40 text-fg-3" : "border-dashed border-teal/50 bg-teal/5 text-teal hover:bg-teal/15 disabled:hover:bg-teal/5")}>
                 <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-md bg-ink-4">
-                  {s.status === "locked" ? <Lock size={14} /> : icon ? <img src={icon} alt="" className={cn("h-8 w-8 object-cover", s.restriction?.type === "role" && s.status !== "filled" && "invert p-1.5")} /> : s.status === "open" ? <UserPlus size={14} /> : <span>{s.index + 1}</span>}
+                  {s.status === "locked" ? <Lock size={14} /> : icon ? <Icon src={icon} alt="" size={32} className={cn("h-8 w-8 object-cover", s.restriction?.type === "role" && s.status !== "filled" && "invert p-1.5")} /> : s.status === "open" ? <UserPlus size={14} /> : <span className="font-display text-sm text-fg">{(s.userName || "?").slice(0, 1).toUpperCase()}</span>}
                 </span>
-                <span className="w-full truncate text-center">{s.index === 0 ? "Host" : label}</span>
+                <span className="w-full break-words text-center leading-tight line-clamp-2">{s.index === 0 ? "Host" : label}</span>
               </button>
             </li>
           );

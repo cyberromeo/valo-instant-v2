@@ -13,7 +13,7 @@ export default async function StatusPage() {
   const [version, ...regions] = await Promise.all([getVersion(), ...STATUS_REGIONS.map((r) => getRiotStatus(r))]);
   return (
     <>
-      <PageHead kicker={`LIVE · PATCH ${version.version.split(".").slice(0, 2).join(".")} · BUILD ${version.buildVersion}`} title="Server status" sub="Riot's own status feed for every Valorant region, refreshed every couple of minutes." right={<Link href="/news" className="btn-ghost">Esports news</Link>} />
+      <PageHead kicker={`LIVE · PATCH ${version.version.split(".").slice(0, 2).join(".")}`} title="Server status" sub="Riot's own status feed for every Valorant region, refreshed every couple of minutes." right={<Link href="/news" className="btn-ghost">Esports news</Link>} />
       <ul className="grid gap-3 sm:grid-cols-2">
         {STATUS_REGIONS.map((r, i) => {
           const s = regions[i];
@@ -38,7 +38,7 @@ export default async function StatusPage() {
                 <div key={e.id} className="mt-3 rounded-xl border border-gold/40 bg-gold/10 p-3 text-sm">
                   <p className="font-bold">{en(e.titles)}</p>
                   {e.updates?.[0] && <p className="mt-1 text-xs text-fg-2">{en(e.updates[0].translations)}</p>}
-                  <p className="mt-1 text-[11px] text-fg-3">Maintenance{e.maintenance_status ? ` · ${e.maintenance_status}` : ""} · {fmtDate(e.created_at)}</p>
+                  <p className="mt-1 text-[11px] text-fg-3">Maintenance{e.maintenance_status ? ` · ${e.maintenance_status.replace(/_/g, " ")}` : ""} · {fmtDate(e.created_at)}</p>
                 </div>
               ))}
               {s && ok && maint.length === 0 && <p className="mt-2 text-xs text-fg-3">No incidents or planned maintenance.</p>}

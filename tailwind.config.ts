@@ -22,10 +22,10 @@ const config: Config = {
         card: "0 1px 0 rgba(255,255,255,.04) inset, 0 12px 30px -16px rgba(0,0,0,.8)",
       },
       keyframes: {
-        rise: { from: { opacity: "0", transform: "translateY(8px)" }, to: { opacity: "1", transform: "none" } },
+        rise: { from: { opacity: "0" }, to: { opacity: "1" } },
         pulseDot: { "0%,100%": { opacity: "1" }, "50%": { opacity: ".3" } },
       },
-      animation: { rise: "rise .45s cubic-bezier(.2,.7,.2,1) both", pulseDot: "pulseDot 1.6s ease-in-out infinite" },
+      animation: { rise: "rise .4s ease-out", pulseDot: "pulseDot 1.6s ease-in-out infinite" },
     },
   },
   plugins: [],

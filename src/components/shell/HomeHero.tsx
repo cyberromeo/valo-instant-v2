@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Img } from "@/components/ui/Img";
+import { Pic } from "@/components/ui/Pic";
 
 export function HomeHero({ agent, patch, act, daysLeft }: { agent: { name: string; role: string; portrait: string | null; slug: string; colors: string[] }; patch: string; act: string; daysLeft: number }) {
   const c = (k: number) => `#${agent.colors?.[k]?.slice(0, 6) || "1f232c"}`;
@@ -14,7 +14,7 @@ export function HomeHero({ agent, patch, act, daysLeft }: { agent: { name: strin
           <div className="mt-4 flex flex-wrap gap-2"><Link href="/party" className="btn-primary">Find a party</Link><Link href="/wiki" className="btn-ghost">Open the wiki</Link></div>
         </div>
         <Link href={`/wiki/agents/${agent.slug}`} className="relative -mb-5 -mr-5 sm:-mb-8 sm:-mr-8" aria-label={`Featured agent ${agent.name}`}>
-          <Img src={agent.portrait} alt="" className="absolute inset-0 h-full w-full object-cover object-top sm:object-contain sm:object-bottom" eager />
+          <Pic src={agent.portrait} alt="" sizes="(min-width: 640px) 260px, 140px" priority className="object-cover object-top sm:object-contain sm:object-bottom" />
           <span className="absolute bottom-6 right-6 rounded-full bg-ink/80 px-2 py-1 font-mono text-[10px] uppercase text-fg-2 sm:bottom-10 sm:right-10">{agent.name} · {agent.role}</span>
         </Link>
       </div>

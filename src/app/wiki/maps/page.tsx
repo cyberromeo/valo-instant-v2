@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageHead } from "@/components/ui/PageHead";
-import { Img } from "@/components/ui/Img";
+import { Pic } from "@/components/ui/Pic";
 import { getMaps } from "@/lib/valorant-api";
 
 export const metadata: Metadata = { title: "Maps" };
@@ -15,7 +15,7 @@ export default async function MapsPage() {
       {items.map((m) => (
         <li key={m.uuid}>
           <Link href={`/wiki/maps/${m.slug}`} className="card group relative block aspect-[16/9] overflow-hidden">
-            <Img src={m.splash} alt="" className="absolute inset-0 h-full w-full object-cover transition group-hover:scale-105" />
+            <Pic src={m.splash} alt="" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition group-hover:scale-105" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/60 to-transparent p-3 pt-10">
               <p className="font-display text-2xl uppercase leading-none">{m.displayName}</p>
               <p className="text-xs text-fg-2">{m.coordinates || "Classified"}{m.callouts?.length ? ` · ${m.callouts.length} callouts` : ""}</p>
