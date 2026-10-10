@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+    function validLobby(d) {
+      return d.region is string && d.region.size() <= 8
+        && d.mode is string && d.mode in ['competitive','premier','unrated','swiftplay','spikerush','deathmatch']
+        && d.hostId == request.auth.uid
+        && d.hostName is string && d.hostName.size() <= 40
+        && d.slots is list && d.slots.size() >= 1 && d.slots.size() <= 10
+        && d.memberIds is list && d.memberIds.size() <= 10
+        && d.minRank is int && d.maxRank is int && d.minRank >= 0 && d.maxRank <= 27
+        && d.createdAt is int && d.expiresAt is int && d.expiresAt - d.createdAt <= 6 * 60 * 60 * 1000
+        && (!('partyCode' in d) || d.partyCode == null || (d.partyCode is string && d.partyCode.size() <= 12))
+        && (!('note' in d) || d.note == null || (d.note is string && d.note.size() <= 140));
+    }
+
+    // Lobbies are public to read. Only the host creates/deletes; any signed-in user may join or leave
+    // (the seat logic runs in a client transaction and the host-only fields are frozen here).
+    match /lobbies/{lobbyId} {
+      allow read: if true;
+      allow create: if signedIn() && validLobby(request.resource.data);
+      allow delete: if isMe(resource.data.hostId);
+      allow update: if signedIn()
+        && request.resource.data.hostId == resource.data.hostId
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.region == resource.data.region
+        && request.resource.data.mode == resource.data.mode
+        && request.resource.data.slots.size() == resource.data.slots.size()
+        && (isMe(resource.data.hostId)
+            || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['slots','memberIds','memberCount','status']));
+    }
+
+    // Profiles: public read (names, ranks, cards show on lobby cards), owner-only write.
+    match /users/{uid} {
+      allow read: if true;
+      allow create, update: if isMe(uid) && request.resource.data.uid == uid
+        && request.resource.data.displayName is string && request.resource.data.displayName.size() <= 40
+        && request.resource.data.rankTier is int && request.resource.data.rankTier >= 0 && request.resource.data.rankTier <= 27;
+      allow delete: if isMe(uid);
+    }
+  }
+}
