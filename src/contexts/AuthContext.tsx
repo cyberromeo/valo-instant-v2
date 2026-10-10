@@ -55,7 +55,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUpEmail = useCallback(async (e: string, p: string, name: string) => {
     const { auth } = getFirebase();
     const cred = await createUserWithEmailAndPassword(auth!, e, p);
-    if (name) await updateProfile(cred.user, { displayName: name });
+    if (name) {
+      await updateProfile(cred.user, { displayName: name });
+      await profiles.upsert({ uid: cred.user.uid, displayName: name, email: e, photoURL: null, region: "AP", rankTier: 0, rankName: "Unranked", rankVerified: false, updatedAt: Date.now() }).catch(() => {});
+    }
   }, []);
   const logout = useCallback(async () => { const { auth } = getFirebase(); await signOut(auth!); }, []);
   const saveProfile = useCallback(async (p: Partial<Profile>) => {

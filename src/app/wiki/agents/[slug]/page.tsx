@@ -40,7 +40,7 @@ export default async function AgentPage({ params }: { params: Promise<{ slug: st
               </div>
             )}
           </div>
-          <div className="relative mx-auto -mb-5 h-[320px] w-full max-w-[280px] md:-mb-8 md:h-[440px] md:w-[360px] md:max-w-none">
+          <div className="relative mx-auto -mb-5 h-[400px] w-full md:-mb-8 md:h-[440px] md:w-[360px]">
             <Pic src={a.fullPortrait} alt={a.displayName} sizes="(min-width: 768px) 360px, 280px" priority className="object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,0,0,.6)]" />
           </div>
         </div>

@@ -32,7 +32,8 @@ img { max-width: 100%; height: auto; }
   .scroll-x::-webkit-scrollbar { display: none; }
 }
 
-.callout { position: absolute; transform: translate(-50%, -50%); font: 600 10px/1 ui-monospace, monospace; letter-spacing: .04em; color: #fff; background: rgba(10,11,15,.78); border: 1px solid rgba(255,255,255,.18); padding: 3px 5px; border-radius: 6px; white-space: nowrap; pointer-events: none; }
+.callout { position: absolute; transform: translate(-50%, -50%); font: 600 8px/1 ui-monospace, monospace; letter-spacing: .02em; color: #fff; background: rgba(10,11,15,.78); border: 1px solid rgba(255,255,255,.18); padding: 2px 4px; border-radius: 5px; white-space: nowrap; pointer-events: none; }
+@media (min-width: 640px) { .callout { font-size: 10px; letter-spacing: .04em; padding: 3px 5px; } }
 .callout[data-dim="true"] { opacity: .25; }
 .callout[data-hot="true"] { background: #ff4655; border-color: #ff8a95; z-index: 2; }
 
