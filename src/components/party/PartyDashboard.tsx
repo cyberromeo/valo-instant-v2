@@ -89,9 +89,9 @@ export function PartyDashboard({ agents, roles }: { agents: AgentLite[]; roles: 
         {REGION_KEYS.map((r) => <button key={r} type="button" onClick={() => { setRegion(r); setServer(""); }} className={cn("chip", region === r && "chip-on")}>{r} <span className="text-fg-3">{VALORANT_REGIONS[r].name}</span></button>)}
       </div>
       <div className="scroll-x mb-3">
+        <button type="button" onClick={() => setShowFilters((s) => !s)} className={cn("chip", (showFilters || activeFilters > 0) && "chip-on")}><Filter size={12} /> Filters{activeFilters ? ` (${activeFilters})` : ""}</button>
         <button type="button" onClick={() => setMode("all")} className={cn("chip", mode === "all" && "chip-on")}>All <b>{rows?.length ?? 0}</b></button>
         {MODES.map((m) => <button key={m.id} type="button" onClick={() => setMode(m.id)} className={cn("chip", mode === m.id && "chip-on")}>{m.label} <b>{counts[m.id] || 0}</b></button>)}
-        <button type="button" onClick={() => setShowFilters((s) => !s)} className={cn("chip ml-auto", (showFilters || activeFilters > 0) && "chip-on")}><Filter size={12} /> Filters{activeFilters ? ` (${activeFilters})` : ""}</button>
       </div>
 
       {showFilters && (
