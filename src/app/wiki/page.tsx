@@ -27,6 +27,7 @@ export default async function WikiHome() {
     { href: "/wiki/collection/modes", title: "Game Modes", sub: "rules & durations" },
     { href: "/wiki/collection/currency", title: "Currency", sub: "VP, RP, KC" },
     { href: "/wiki/collection/borders", title: "Level Borders", sub: "account levels" },
+    { href: "/crosshairs", title: "Crosshairs", sub: "pro codes, live previews" },
     { href: "/wiki/trainer", title: "Aim Trainer", sub: "Shoot the Blind, 30 s", accent: true },
   ];
   return (

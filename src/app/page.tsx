@@ -7,6 +7,7 @@ import { Img } from "@/components/ui/Img";
 import { Icon } from "@/components/ui/Pic";
 import { num } from "@/lib/utils";
 import { HomeHero } from "@/components/shell/HomeHero";
+import { CROSSHAIRS } from "@/lib/crosshair-library";
 
 export const revalidate = 300;
 
@@ -59,7 +60,8 @@ export default async function Home() {
         </ul>
       </section>
 
-      <section className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <section className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <Link href="/crosshairs" className="card col-span-2 border-teal/30 p-4 hover:border-teal/60 md:col-span-1"><span className="block font-display text-xl uppercase leading-none">Crosshairs</span><span className="block text-xs text-fg-2">{CROSSHAIRS.length} codes · TenZ, aspas, Demon1 and more</span></Link>
         {[
           { href: "/wiki/weapons", t: "Arsenal", s: `${weapons.length} weapons · ${num(skins)} skins` },
           { href: "/wiki/ranks", t: "Ranks", s: "Iron to Radiant" },

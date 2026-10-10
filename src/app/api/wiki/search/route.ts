@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { CAT_LABEL, CROSSHAIRS } from "@/lib/crosshair-library";
 import { getAgents, getBuddies, getCards, getMaps, getSprays, getTitles, getWeapons, SLOT_KEY, skinThumb } from "@/lib/valorant-api";
 
 export const revalidate = 3600;
@@ -6,7 +7,7 @@ export const revalidate = 3600;
 export interface SearchItem { t: string; n: string; h: string; s?: string; i?: string | null }
 
 const PAGES: [string, string][] = [
-  ["Party finder", "/party"], ["Agents", "/wiki/agents"], ["Arsenal", "/wiki/weapons"], ["Maps", "/wiki/maps"], ["Ranks", "/wiki/ranks"],
+  ["Party finder", "/party"], ["Crosshairs", "/crosshairs"], ["Crosshair builder", "/crosshairs/build"], ["Agents", "/wiki/agents"], ["Arsenal", "/wiki/weapons"], ["Maps", "/wiki/maps"], ["Ranks", "/wiki/ranks"],
   ["Player Cards", "/wiki/collection/cards"], ["Gun Buddies", "/wiki/collection/buddies"], ["Sprays", "/wiki/collection/sprays"],
   ["Titles", "/wiki/collection/titles"], ["Currency", "/wiki/collection/currency"], ["Seasons", "/wiki/collection/seasons"],
   ["Bundles", "/wiki/collection/bundles"], ["Game Modes", "/wiki/collection/modes"], ["Level Borders", "/wiki/collection/borders"],
@@ -30,5 +31,6 @@ export async function GET() {
   buddies.forEach((b) => out.push({ t: "Buddies", n: b.displayName, h: `/wiki/collection/buddies?q=${encodeURIComponent(b.displayName)}`, i: b.displayIcon }));
   sprays.forEach((s) => out.push({ t: "Sprays", n: s.displayName, h: `/wiki/collection/sprays?q=${encodeURIComponent(s.displayName)}`, i: s.displayIcon }));
   titles.forEach((t) => t.titleText && out.push({ t: "Titles", n: t.titleText, h: `/wiki/collection/titles?q=${encodeURIComponent(t.titleText)}`, s: t.displayName?.replace(/ Title$/, "") || "" }));
+  CROSSHAIRS.forEach((x) => out.push({ t: "Crosshairs", n: x.name, h: `/crosshairs/${x.id}`, s: x.cat === "pro" ? `${x.team ? `${x.team} · ` : ""}pro crosshair` : CAT_LABEL[x.cat] }));
   return NextResponse.json(out, { headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } });
 }

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Home, Radio, User, Users } from "lucide-react";
+import { BookOpen, Crosshair, Home, Radio, User, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SearchButton } from "@/components/wiki/SearchOverlay";
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,6 +10,7 @@ const TABS = [
   { href: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
   { href: "/party", label: "Party", icon: Users, match: (p: string) => p.startsWith("/party") },
   { href: "/wiki", label: "Wiki", icon: BookOpen, match: (p: string) => p.startsWith("/wiki") },
+  { href: "/crosshairs", label: "Crosshairs", icon: Crosshair, match: (p: string) => p.startsWith("/crosshairs") },
   { href: "/status", label: "Live", icon: Radio, match: (p: string) => p.startsWith("/status") || p.startsWith("/news") },
   { href: "/profile", label: "Profile", icon: User, match: (p: string) => p.startsWith("/profile") },
 ];
@@ -44,12 +45,12 @@ export function Shell({ children }: { children: React.ReactNode }) {
         VALO INSTANT v2 by SRIHARI · game data from valorant-api.com · Not affiliated with Riot Games. VALORANT and all related assets are trademarks of Riot Games, Inc.
       </footer>
       <nav aria-label="Tabs" className="fixed inset-x-0 bottom-0 z-40 border-t border-line/70 bg-ink/90 backdrop-blur-md md:hidden" style={{ paddingBottom: "var(--sab)" }}>
-        <ul className="grid grid-cols-5">
+        <ul className="grid grid-cols-6">
           {TABS.map((t) => {
             const on = t.match(path);
             return (
               <li key={t.href}>
-                <Link href={t.href} className={cn("flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold text-fg-3", on && "text-val")} aria-current={on ? "page" : undefined}>
+                <Link href={t.href} className={cn("flex flex-col items-center gap-1 py-2.5 text-[10.5px] font-semibold tracking-tight text-fg-3", on && "text-val")} aria-current={on ? "page" : undefined}>
                   <t.icon size={22} strokeWidth={on ? 2.4 : 1.8} />
                   {t.label}
                 </Link>

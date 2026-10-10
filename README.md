@@ -14,6 +14,15 @@ Find a Valorant party in seconds, and read the whole game. A complete rebuild of
 - Riot ID rank lookup through HenrikDev when `HENRIK_API_KEY` is set; a clear "not connected" state and manual rank pick when it is not.
 - Firestore security rules and composite indexes live in the repo; emulator config for local development.
 
+**Crosshairs** (new)
+- 436 working crosshair codes: 352 pro players' current crosshairs (TenZ, aspas, Demon1, Derke, yay, Boaster and more), 20 classic styles (dot, circle, box, diamond, cross) and 64 fun ones (Among Us, Cat, Flappy Bird, Smiley…). Collected 2026-10-11 from ProSettings.net player pages, Crosshair Canvas, THESPIKE.GG and AimCodes; each item keeps its source link.
+- Every code is checked by `src/lib/crosshair.ts`, a parser/validator for the in-game profile code format (general, primary `P`, ADS `A`, sniper `S`; key ranges enforced). Codes that fail are dropped.
+- Previews are drawn from the code itself (SVG: colour or custom hex, outlines as a frame with their own opacity, inner/outer lines with separate vertical length, offsets, centre dot), over map art cropped from the official splashes or plain dark/gray/light backdrops.
+- `/crosshairs`: search by player, team or style, filter by type (Pros / Styles / Fun) and colour, switch the backdrop, copy any code in one tap.
+- `/crosshairs/[id]`: big preview with backdrop and zoom (zoomed, real 1080p size, 2×, 4×), ADS view when the code has one, full settings breakdown, source and date.
+- `/crosshairs/build`: build your own with sliders or paste any code to start from it; the code updates live.
+- Crosshairs are part of the global search.
+
 **Wiki** (all of ValWiki, from valorant-api.com, no key)
 - Agents with role filter and search; agent page with portrait, lore, role, abilities C/Q/E/X, same-role agents, previous/next.
 - Arsenal by class with cost and fire rate; weapon page with handling gauges, damage-by-range table, and every skin filterable by edition with variants, upgrade levels and in-game preview video.

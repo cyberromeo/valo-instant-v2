@@ -8,7 +8,7 @@ type Item = { t: string; n: string; h: string; s?: string; i?: string | null };
 let indexPromise: Promise<Item[]> | null = null;
 const loadIndex = () => (indexPromise ??= fetch("/api/wiki/search").then((r) => r.json()).catch(() => { indexPromise = null; return []; }));
 
-const TYPE_ORDER = ["Pages", "Agents", "Abilities", "Maps", "Weapons", "Skins", "Player Cards", "Buddies", "Sprays", "Titles"];
+const TYPE_ORDER = ["Pages", "Agents", "Crosshairs", "Abilities", "Maps", "Weapons", "Skins", "Player Cards", "Buddies", "Sprays", "Titles"];
 
 export function SearchButton() {
   const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ export function SearchButton() {
   }, []);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="btn-ghost h-9 px-3" aria-label="Search the wiki" onMouseEnter={() => loadIndex()}>
+      <button type="button" onClick={() => setOpen(true)} className="btn-ghost h-9 px-3" aria-label="Search" onMouseEnter={() => loadIndex()}>
         <Search size={16} /> <span className="hidden sm:inline">Search</span>
         <kbd className="hidden rounded border border-line px-1 font-mono text-[10px] text-fg-3 lg:inline">⌘K</kbd>
       </button>
@@ -69,7 +69,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
       <div className="card w-full max-w-xl overflow-hidden animate-rise" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-2 border-b border-line px-3">
           <Search size={18} className="text-fg-3" />
-          <input ref={ref} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Agents, abilities, weapons, skins, maps, cards…" className="h-12 flex-1 bg-transparent text-base outline-none placeholder:text-fg-3"
+          <input ref={ref} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Agents, weapons, skins, maps, crosshairs…" className="h-12 flex-1 bg-transparent text-base outline-none placeholder:text-fg-3"
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") { e.preventDefault(); setSel((s) => Math.min(s + 1, results.length - 1)); }
               if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
